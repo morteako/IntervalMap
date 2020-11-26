@@ -37,6 +37,7 @@ module Data.IntervalMap.Generic.Lazy (
 
             -- ** Interval query
             , containing
+            , contains
             , intersecting
             , within
             

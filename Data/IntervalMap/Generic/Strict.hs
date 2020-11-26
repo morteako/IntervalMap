@@ -72,6 +72,7 @@ module Data.IntervalMap.Generic.Strict (
 
             -- ** Interval query
             , containing
+            , contains
             , intersecting
             , within
             
