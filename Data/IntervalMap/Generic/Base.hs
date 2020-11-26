@@ -65,6 +65,7 @@ module Data.IntervalMap.Generic.Base (
 
             -- ** Interval query
             , containing
+            , contains
             , intersecting
             , within
             
@@ -461,6 +462,17 @@ t `containing` pt = pt `seq` fromDistinctAscList (go [] pt t)
        | p `below` k  =  go xs p l  -- to the left of the lower bound: can't be in right subtree
        | p `inside` k =  go ((k,v) : go xs p r) p l
        | otherwise    =  go (go xs p r) p l
+      
+-- | For effiency
+contains :: (Interval k e) => IntervalMap k v -> e -> Bool
+t `contains` pt = go pt t
+  where
+    go _ Nil = False
+    go p (Node _ k m v l r)
+       | p `above` m  =  False         -- above all intervals in the tree: no result
+       | p `below` k  =  go p l  -- to the left of the lower bound: can't be in right subtree
+       | p `inside` k =  True
+       | otherwise    =  go p r || go  p l
 
 -- | Return the submap of key intervals overlapping (intersecting) the given interval.
 -- This is the second element of the value of 'splitIntersecting':
